@@ -2,146 +2,133 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8" />
-<title>Calculadora Completa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Calculadora</title>
 
 <style>
     body {
-        font-family: Arial, sans-serif;
+        background: #101010;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: #1d1f21;
-        color: white;
         margin: 0;
+        font-family: Arial, sans-serif;
+        color: white;
     }
 
     .calc {
-        background: #2b2d31;
+        background: #181818;
         padding: 20px;
-        border-radius: 12px;
+        border-radius: 15px;
         width: 320px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        box-shadow: 0 0 20px rgba(255,255,255,0.1);
     }
 
-    #display {
+    .display {
         width: 100%;
-        height: 60px;
-        font-size: 28px;
-        margin-bottom: 15px;
-        text-align: right;
-        padding: 10px;
-        border-radius: 8px;
+        height: 70px;
+        font-size: 2rem;
+        background: #000;
+        color: #0f0;
         border: none;
-        background: #3a3d41;
-        color: white;
+        padding: 10px;
+        text-align: right;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        outline: none;
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
     }
 
     button {
-        width: 72px;
-        height: 60px;
-        font-size: 20px;
-        margin: 5px;
+        padding: 20px;
+        font-size: 1.2rem;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
-        background: #4b4f55;
+        background: #333;
         color: white;
         transition: 0.2s;
     }
 
     button:hover {
-        background: #5a5f66;
+        background: #555;
     }
 
-    .op {
-        background: #ff9800;
-    }
-    .op:hover {
-        background: #e68a00;
-    }
+    .op { background: #ff9500; }
+    .op:hover { background: #ffa733; }
 
-    .igual {
-        background: #4caf50;
-    }
-    .igual:hover {
-        background: #449d48;
-    }
+    .del  { background: #d63031; }
+    .del:hover { background: #ff4d4d; }
 
-    .clear {
-        background: #f44336;
-    }
-    .clear:hover {
-        background: #d7382c;
-    }
-
+    .equal { background: #00b894; }
+    .equal:hover { background: #00d6aa; }
 </style>
 
 </head>
 <body>
+    <div class="calc">
+        <input type="text" id="display" class="display" disabled>
 
-<div class="calc">
-    <input id="display" disabled />
+        <div class="buttons">
+            <button class="del" onclick="limpar()">C</button>
+            <button class="del" onclick="apagar()">⌫</button>
+            <button class="op" onclick="adicionar('%')">%</button>
+            <button class="op" onclick="adicionar('/')">÷</button>
 
-    <div>
-        <button class="clear" onclick="limpar()">C</button>
-        <button onclick="add('%')">%</button>
-        <button onclick="raiz()">√</button>
-        <button class="op" onclick="add('/')">÷</button>
+            <button onclick="adicionar('7')">7</button>
+            <button onclick="adicionar('8')">8</button>
+            <button onclick="adicionar('9')">9</button>
+            <button class="op" onclick="adicionar('*')">×</button>
+
+            <button onclick="adicionar('4')">4</button>
+            <button onclick="adicionar('5')">5</button>
+            <button onclick="adicionar('6')">6</button>
+            <button class="op" onclick="adicionar('-')">−</button>
+
+            <button onclick="adicionar('1')">1</button>
+            <button onclick="adicionar('2')">2</button>
+            <button onclick="adicionar('3')">3</button>
+            <button class="op" onclick="adicionar('+')">+</button>
+
+            <button onclick="adicionar('0')">0</button>
+            <button onclick="adicionar('.')">.</button>
+            <button class="op" onclick="raiz()">√</button>
+            <button class="equal" onclick="calcular()">=</button>
+        </div>
     </div>
-
-    <div>
-        <button onclick="add('7')">7</button>
-        <button onclick="add('8')">8</button>
-        <button onclick="add('9')">9</button>
-        <button class="op" onclick="add('*')">×</button>
-    </div>
-
-    <div>
-        <button onclick="add('4')">4</button>
-        <button onclick="add('5')">5</button>
-        <button onclick="add('6')">6</button>
-        <button class="op" onclick="add('-')">−</button>
-    </div>
-
-    <div>
-        <button onclick="add('1')">1</button>
-        <button onclick="add('2')">2</button>
-        <button onclick="add('3')">3</button>
-        <button class="op" onclick="add('+')">+</button>
-    </div>
-
-    <div>
-        <button onclick="add('0')" style="width: 154px;">0</button>
-        <button onclick="add('**')">xⁿ</button>
-        <button class="igual" onclick="calcular()">=</button>
-    </div>
-</div>
 
 <script>
-    function add(num) {
-        document.getElementById("display").value += num;
+    const dis = document.getElementById("display");
+
+    function adicionar(v) {
+        dis.value += v;
     }
 
     function limpar() {
-        document.getElementById("display").value = "";
+        dis.value = "";
+    }
+
+    function apagar() {
+        dis.value = dis.value.slice(0, -1);
     }
 
     function raiz() {
-        let valor = document.getElementById("display").value;
-        if (valor !== "") {
-            document.getElementById("display").value = Math.sqrt(valor);
+        if (dis.value !== "") {
+            dis.value = Math.sqrt(eval(dis.value));
         }
     }
 
     function calcular() {
-        let expressao = document.getElementById("display").value;
-
         try {
-            let resultado = eval(expressao);
-            document.getElementById("display").value = resultado;
+            dis.value = eval(dis.value.replace("%", "/100"));
         } catch {
-            document.getElementById("display").value = "Erro";
+            dis.value = "Erro";
         }
     }
 </script>
